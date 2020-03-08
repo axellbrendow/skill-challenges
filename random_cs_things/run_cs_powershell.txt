@@ -1,0 +1,29 @@
+$MyCode = @"
+public class Calc
+{
+    public int Add(int a,int b)
+    {
+        return a+b;
+    }
+    
+    public int Mul(int a,int b)
+    {
+        return a*b;
+    }
+    public static float Divide(int a,int b)
+    {
+        return a/b;
+    }
+}
+"@
+
+Add-Type -TypeDefinition $MyCode -Language CSharp
+
+$CalcInstance = New-Object -TypeName Calc
+$CalcInstance.Add(20,30)
+
+# $Assem = (
+# "System"
+# )
+#
+# Add-Type -ReferencedAssemblies $Assem -TypeDefinition $MyCode -Language CSharp
