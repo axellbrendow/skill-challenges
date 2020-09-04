@@ -15,10 +15,9 @@ python3 ajuste_de_curva.py < entrada_linear_youtube.txt # Entrada para ajuste de
 python3 ajuste_de_curva.py < entrada_exponencial_youtube.txt # Entrada para ajuste de curva exponential do youtube
 ```
 
-Para Windows:
+Para Windows (talvez seja `py` invés de `python` o comando):
 
 ```cmd
-REM talvez seja py invés de python o comando
 python ajuste_de_curva.py < entrada_linear.txt
 python ajuste_de_curva.py < entrada_exponencial.txt
 python ajuste_de_curva.py < entrada_linear_youtube.txt
