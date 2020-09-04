@@ -18,53 +18,53 @@ metodo = input(': ')
 print()
 numPontos = int(input('Informe o número de pontos: '))
 
-abscissas = []
-ordenadas = []
+x = []
+y = []
 
 for i in range(numPontos):
     coordenadas = input(f'Informe x{i + 1} y{i + 1} separados por um espaço: ').split()
-    abscissas.append(float(coordenadas[0]))
-    ordenadas.append(float(coordenadas[1]))
+    x.append(float(coordenadas[0]))
+    y.append(float(coordenadas[1]))
 
 print()
-x = float(input('Informe o valor da abscissa, x, em que a ordenada, y, deve ser estimada: '))
+x_solicitado = float(input('Informe o valor da abscissa, x, em que a ordenada, y, deve ser estimada: '))
 
 # Cálculo dos somatórios
 
 if metodo == '2': # Método exponencial
-    ordenadas_definitivas = []
-    for ordenada in ordenadas:
-        ordenadas_definitivas.append(math.log(ordenada))
+    y_definitivos = []
+    for ordenada in y:
+        y_definitivos.append(math.log(ordenada))
 else:
-    ordenadas_definitivas = ordenadas
+    y_definitivos = y
 
-somatorioDasAbscissas = 0.0
-somatorioDasOrdenadas = 0.0
-somatorioDoProduto = 0.0
-somatorioDoQuadradoDasAbscissas = 0.0
-somatorioDoQuadradoDasOrdenadas = 0.0
+somax = 0.0
+somay = 0.0
+somaxy = 0.0
+somax2 = 0.0
+somay2 = 0.0
 
 for i in range(numPontos):
-    somatorioDasAbscissas += abscissas[i]
-    somatorioDasOrdenadas += ordenadas_definitivas[i]
-    somatorioDoProduto += abscissas[i] * ordenadas_definitivas[i]
-    somatorioDoQuadradoDasAbscissas += abscissas[i] * abscissas[i]
-    somatorioDoQuadradoDasOrdenadas += ordenadas_definitivas[i] * ordenadas_definitivas[i]
+    somax += x[i]
+    somay += y_definitivos[i]
+    somaxy += x[i] * y_definitivos[i]
+    somax2 += x[i] * x[i]
+    somay2 += y_definitivos[i] * y_definitivos[i]
 
 # Cálculo dos coeficientes a e b
 
 if metodo == '2': # Método exponencial
-    a_linha = (numPontos * somatorioDoProduto - somatorioDasAbscissas * somatorioDasOrdenadas)\
-        / (numPontos * somatorioDoQuadradoDasAbscissas - math.pow(somatorioDasAbscissas, 2))
+    a_linha = (numPontos * somaxy - somax * somay)\
+        / (numPontos * somax2 - math.pow(somax, 2))
     
-    b_linha = (somatorioDasOrdenadas - a_linha * somatorioDasAbscissas) / numPontos
+    b_linha = (somay - a_linha * somax) / numPontos
     a = a_linha
     b = math.exp(b_linha)  # mesmo que: b = e ^ b_linha
 else:
-    b = (numPontos * somatorioDoProduto - somatorioDasAbscissas * somatorioDasOrdenadas)\
-        / (numPontos * somatorioDoQuadradoDasAbscissas - math.pow(somatorioDasAbscissas, 2))
+    b = (numPontos * somaxy - somax * somay)\
+        / (numPontos * somax2 - math.pow(somax, 2))
 
-    a = (somatorioDasOrdenadas - b * somatorioDasAbscissas) / numPontos
+    a = (somay - b * somax) / numPontos
 
 # Mostrando a equação da reta
 
@@ -86,9 +86,9 @@ else:
 
 # Cálculo de partes da fórmula do coeficiente de determinação
 
-colchete1 = somatorioDoProduto - (somatorioDasAbscissas * somatorioDasOrdenadas) / numPontos
-colchete2 = somatorioDoQuadradoDasAbscissas - math.pow(somatorioDasAbscissas, 2) / numPontos
-colchete3 = somatorioDoQuadradoDasOrdenadas - math.pow(somatorioDasOrdenadas, 2) / numPontos
+colchete1 = somaxy - (somax * somay) / numPontos
+colchete2 = somax2 - math.pow(somax, 2) / numPontos
+colchete3 = somay2 - math.pow(somay, 2) / numPontos
 
 # Cálculo do coeficiente de determinação (r²)
 coeficienteDeDeterminacao = math.pow(colchete1, 2) / (colchete2 * colchete3)
@@ -120,9 +120,9 @@ print(f'Coeficiente de determinação: {coeficienteDeDeterminacao} ({classificac
 
 print()
 if metodo == '2': # Método exponencial
-    print(f'O ponto estimado é ({x}, {truncar(b * math.exp(a * x), 6)})')
+    print(f'O ponto estimado é ({x_solicitado}, {truncar(b * math.exp(a * x_solicitado), 6)})')
 else:
-    print(f'O ponto estimado é ({x}, {truncar(a + b * x, 6)})')
+    print(f'O ponto estimado é ({x_solicitado}, {truncar(a + b * x_solicitado, 6)})')
 
 # Desenhando os gráficos
 # REFERÊNCIAS:
@@ -131,17 +131,17 @@ else:
 
 import matplotlib.pyplot as plt
 
-ordenadas_estimadas = []
+y_estimados = []
 
 if metodo == '2': # Método exponencial
-    for abscissa in abscissas:
-        ordenadas_estimadas.append(b * math.exp(a * abscissa))
+    for abscissa in x:
+        y_estimados.append(b * math.exp(a * abscissa))
 else:
-    for abscissa in abscissas:
-        ordenadas_estimadas.append(a + b * abscissa)
+    for abscissa in x:
+        y_estimados.append(a + b * abscissa)
 
 # plt.scatter(abscissas, ordenadas, color='orange', label='pontos originais (x_i, y_i)')
-plt.plot(abscissas, ordenadas, linestyle='dashed', marker='D', label='pontos originais (x_i, y_i)')
+plt.plot(x, y, linestyle='dashed', marker='D', label='pontos originais (x_i, y_i)')
 
 if metodo == '2': # Método exponencial
     label_grafico_estimado = f'ŷ_i = {truncar(b, 6)} e ^ ({truncar(a, 6)} * x_i)'
@@ -149,8 +149,8 @@ else:
     label_grafico_estimado = f'ŷ_i = {truncar(a, 6)} + {truncar(b, 6)} * x_i'
 
 plt.plot(
-    abscissas,
-    ordenadas_estimadas,
+    x,
+    y_estimados,
     linestyle='solid',
     marker='o',
     label=label_grafico_estimado
