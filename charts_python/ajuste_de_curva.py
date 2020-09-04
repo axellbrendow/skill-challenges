@@ -29,55 +29,27 @@ for i in range(numPontos):
 print()
 x = float(input('Informe o valor da abscissa, x, em que a ordenada, y, deve ser estimada: '))
 
-# Funções auxiliares para somatórios
-
-def somar_lista(lista):
-    soma = 0.0
-
-    for valor in lista:
-        soma += valor
-
-    return soma
-
-
-def somar_produto_de(lista1, lista2):
-    soma = 0.0
-
-    for i in range(len(lista1)):
-        soma += lista1[i] * lista2[i]
-
-    return soma
-
-
-def somar_o_quadrado_de(lista):
-    soma = 0.0
-
-    for valor in lista:
-        soma += valor * valor
-
-    return soma
-
-
-def obter_o_logaritmo_natural_de_cada_elemento(lista):
-    nova_lista = []
-
-    for valor in lista:
-        nova_lista.append(math.log(valor))
-
-    return nova_lista
-
 # Cálculo dos somatórios
 
 if metodo == '2': # Método exponencial
-    ordenadas_definitivas = obter_o_logaritmo_natural_de_cada_elemento(ordenadas)
+    ordenadas_definitivas = []
+    for ordenada in ordenadas:
+        ordenadas_definitivas.append(math.log(ordenada))
 else:
     ordenadas_definitivas = ordenadas
 
-somatorioDasAbscissas = somar_lista(abscissas)
-somatorioDasOrdenadas = somar_lista(ordenadas_definitivas)
-somatorioDoProduto = somar_produto_de(abscissas, ordenadas_definitivas)
-somatorioDoQuadradoDasAbscissas = somar_o_quadrado_de(abscissas)
-somatorioDoQuadradoDasOrdenadas = somar_o_quadrado_de(ordenadas_definitivas)
+somatorioDasAbscissas = 0.0
+somatorioDasOrdenadas = 0.0
+somatorioDoProduto = 0.0
+somatorioDoQuadradoDasAbscissas = 0.0
+somatorioDoQuadradoDasOrdenadas = 0.0
+
+for i in range(numPontos):
+    somatorioDasAbscissas += abscissas[i]
+    somatorioDasOrdenadas += ordenadas_definitivas[i]
+    somatorioDoProduto += abscissas[i] * ordenadas_definitivas[i]
+    somatorioDoQuadradoDasAbscissas += abscissas[i] * abscissas[i]
+    somatorioDoQuadradoDasOrdenadas += ordenadas_definitivas[i] * ordenadas_definitivas[i]
 
 # Cálculo dos coeficientes a e b
 
@@ -140,6 +112,7 @@ def obter_classificao(coeficiente_de_determinacao):
         classificacao = 'muito forte ou perfeito'
 
     return classificacao
+
 
 classificacao = obter_classificao(coeficienteDeDeterminacao)
 print()
