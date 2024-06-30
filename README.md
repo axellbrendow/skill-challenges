@@ -1,2 +1,3 @@
 # skill-challenges
-Repository for dumb codes
+
+Repository for dumb/random codes
